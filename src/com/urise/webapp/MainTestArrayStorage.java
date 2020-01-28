@@ -1,6 +1,5 @@
-/**
- * Test for your ArrayStorage implementation
- */
+package com.urise.webapp;
+
 public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 

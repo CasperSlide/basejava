@@ -1,21 +1,11 @@
-/**
- * Array based storage for Resumes
- */
+package com.urise.webapp.storage;
+
 import java.util.Arrays;
 
 public class ArrayStorage {
 
     Resume[] storage = new Resume[10000];
     private int storageSize = 0;
-
-    private int getIndex(String uuid){
-        int index = -1;
-        for (int i = 0; i < storageSize; i++) {
-            if (uuid.equals(storage[i].uuid))
-                index = i;
-        }
-        return index;
-    }
 
     void save(Resume r) {
         storage[storageSize] = r;
@@ -47,10 +37,19 @@ public class ArrayStorage {
     }
 
     Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, storageSize);
+        return Arrays.copyOf(storage, storageSize);
     }
 
     int size() {
         return storageSize;
+    }
+
+    private int getIndex(String uuid){
+        for (int i = 0; i < storageSize; i++) {
+            if (uuid.equals(storage[i].uuid)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
