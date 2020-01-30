@@ -1,6 +1,7 @@
 package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
+
 import java.util.Arrays;
 
 public class ArrayStorage {
@@ -8,31 +9,27 @@ public class ArrayStorage {
     Resume[] storage = new Resume[1000];
     private int storageSize = 0;
 
-    public void save(Resume r) {
+    public void save(Resume resume) {
         if (storageSize == storage.length) {
             System.out.println("[WARN] Добавить резюме невозможно, хранилище заполнено!");
         } else {
-            if (getIndex(r.getUuid()) == -1) {
-                storage[storageSize] = r;
+            if (getIndex(resume.getUuid()) == -1) {
+                storage[storageSize] = resume;
                 storageSize++;
             } else {
-                System.out.println("[INFO] Резюме '" + r.getUuid() + "' было создано ранее");
+                System.out.println("[INFO] Резюме '" + resume.getUuid() + "' было создано ранее");
             }
         }
     }
 
-    public void update(Resume r, String newUuid){
-        int index = getIndex(r.getUuid());
+    public void update(Resume resume) {
+        int index = getIndex(resume.getUuid());
         if (index != -1) {
-            if (newUuid == null){
-                newUuid = "new_" + r.getUuid();
-            }
             Resume newResumeUuid = new Resume();
-            newResumeUuid.setUuid(newUuid);
+            newResumeUuid.setUuid(resume.getUuid());
             storage[index] = newResumeUuid;
-        }
-        else {
-            System.out.println("[INFO] Резюме '" + r.getUuid() + "' отсутсвует");
+        } else {
+            System.out.println("[INFO] Резюме '" + resume.getUuid() + "' отсутсвует");
         }
     }
 
@@ -42,14 +39,13 @@ public class ArrayStorage {
             storage[index] = storage[storageSize - 1];
             storage[storageSize - 1] = null;
             storageSize--;
-        }
-        else {
+        } else {
             System.out.println("[INFO] Резюме '" + uuid + "' отсутсвует");
         }
     }
 
     public void clear() {
-        Arrays.fill(storage, null);
+        Arrays.fill(storage, 0, storageSize, null);
         storageSize = 0;
     }
 
@@ -58,10 +54,8 @@ public class ArrayStorage {
         if (index != -1) {
             return storage[index];
         }
-        else {
-            System.out.println("[INFO] Резюме '" + uuid + "' отсутсвует");
-            return null;
-        }
+        System.out.println("[INFO] Резюме '" + uuid + "' отсутсвует");
+        return null;
     }
 
     public Resume[] getAll() {
@@ -72,7 +66,7 @@ public class ArrayStorage {
         return storageSize;
     }
 
-    private int getIndex(String uuid){
+    private int getIndex(String uuid) {
         for (int i = 0; i < storageSize; i++) {
             if (uuid.equals(storage[i].getUuid())) {
                 return i;

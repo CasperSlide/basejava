@@ -13,22 +13,17 @@ public class MainArray {
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Resume r;
+        Resume resume;
         while (true) {
             System.out.print("Введите одну из команд - (list | size | save uuid | delete uuid | get uuid | clear | exit): ");
             String[] params = reader.readLine().trim().toLowerCase().split(" ");
-            if (params.length < 1 || params.length > 3) {
+            if (params.length < 1 || params.length > 2) {
                 System.out.println("Неверная команда.");
                 continue;
             }
             String uuid = null;
-            String newUuid = null;
             if (params.length == 2) {
                 uuid = params[1].intern();
-            }
-            if (params.length == 3) {
-                uuid = params[1].intern();
-                newUuid = params[2].intern();
             }
             switch (params[0]) {
                 case "list":
@@ -38,9 +33,9 @@ public class MainArray {
                     System.out.println(ARRAY_STORAGE.size());
                     break;
                 case "save":
-                    r = new Resume();
-                    r.setUuid(uuid);
-                    ARRAY_STORAGE.save(r);
+                    resume = new Resume();
+                    resume.setUuid(uuid);
+                    ARRAY_STORAGE.save(resume);
                     printAll();
                     break;
                 case "delete":
@@ -55,9 +50,9 @@ public class MainArray {
                     printAll();
                     break;
                 case "update":
-                    r = new Resume();
-                    r.setUuid(uuid);
-                    ARRAY_STORAGE.update(r, newUuid);
+                    Resume newResume = new Resume();
+                    newResume.setUuid(uuid);
+                    ARRAY_STORAGE.update(newResume);
                     printAll();
                     break;
                 case "exit":
