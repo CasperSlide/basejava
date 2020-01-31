@@ -25,9 +25,7 @@ public class ArrayStorage {
     public void update(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index != -1) {
-            Resume newResumeUuid = new Resume();
-            newResumeUuid.setUuid(resume.getUuid());
-            storage[index] = newResumeUuid;
+            storage[index] = resume;
         } else {
             System.out.println("[INFO] Резюме '" + resume.getUuid() + "' отсутсвует");
         }

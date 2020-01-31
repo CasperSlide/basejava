@@ -50,9 +50,9 @@ public class MainArray {
                     printAll();
                     break;
                 case "update":
-                    Resume newResume = new Resume();
-                    newResume.setUuid(uuid);
-                    ARRAY_STORAGE.update(newResume);
+                    resume = new Resume();
+                    resume.setUuid(uuid);
+                    ARRAY_STORAGE.update(resume);
                     printAll();
                     break;
                 case "exit":
