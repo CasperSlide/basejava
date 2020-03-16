@@ -8,36 +8,39 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void save(Resume resume) {
-        if (isExists(resume)) {
-            throw new ExistStorageException(resume.getUuid());
-        }
+        getExistedIndex(resume);
         saveToStorage(resume);
     }
 
     @Override
     public void delete(String uuid) {
-        if (!isExists(new Resume(uuid))) {
-            throw new NotExistStorageException(uuid);
-        }
+        getNotExistedIndex(new Resume(uuid)); // Как избежать создания нового резюме?
         deleteFromStorage(uuid);
     }
 
     @Override
     public void update(Resume resume) {
-        if (!isExists(resume)) {
-            throw new NotExistStorageException(resume.getUuid());
-        }
+        getNotExistedIndex(resume);
         updateInStorage(resume);
     }
 
     @Override
     public Resume get(String uuid) {
-        if (!isExists(new Resume(uuid))) {
-            throw new NotExistStorageException(uuid);
-        }
+        getNotExistedIndex(new Resume(uuid));
         return getFromStorage(uuid);
     }
 
+    private void getExistedIndex(Resume resume) {
+        if (isExist(resume)) {
+            throw new ExistStorageException(resume.getUuid());
+        }
+    }
+
+    private void getNotExistedIndex(Resume resume) {
+        if (!isExist(resume)) {
+            throw new NotExistStorageException(resume.getUuid());
+        }
+    }
 
     protected abstract void saveToStorage(Resume resume);
 
@@ -47,6 +50,8 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract Resume getFromStorage(String uuid);
 
-    protected abstract boolean isExists(Resume resume);
+    protected abstract boolean isExist(Resume resume);
+
+    protected abstract int getIndex(String uuid);
 
 }

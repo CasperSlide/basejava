@@ -1,7 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.ExistStorageException;
-import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
@@ -15,37 +13,24 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     public void saveToStorage(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (isExists(resume)) {
-            throw new ExistStorageException(resume.getUuid());
-        } else if (size == STORAGE_LIMIT) {
+        if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", resume.getUuid());
         } else {
-            saveToStorage(resume, index);
+            insertElement(resume, getIndex(resume.getUuid()));
             size++;
         }
     }
 
     @Override
     public void deleteFromStorage(String uuid) {
-        int index = getIndex(uuid);
-        if (!isExists(new Resume(uuid))) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            fillDeletedElement(index);
-            storage[size - 1] = null;
-            size--;
-        }
+        fillDeletedElement(getIndex(uuid));
+        storage[size - 1] = null;
+        size--;
     }
 
     @Override
     public void updateInStorage(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (!isExists(resume)) {
-            throw new NotExistStorageException(resume.getUuid());
-        } else {
-            storage[index] = resume;
-        }
+        storage[getIndex(resume.getUuid())] = resume;
     }
 
     @Override
@@ -61,11 +46,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     public Resume getFromStorage(String uuid) {
-        int index = getIndex(uuid);
-        if (!isExists(new Resume(uuid))) {
-            throw new NotExistStorageException(uuid);
-        }
-        return storage[index];
+        return storage[getIndex(uuid)];
     }
 
     @Override
@@ -74,13 +55,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExists(Resume resume) {
-        return getIndex(resume.getUuid()) >= 0 ? true : false;
+    protected boolean isExist(Resume resume) {
+        return getIndex(resume.getUuid()) >= 0;
     }
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract void saveToStorage(Resume resume, int index);
+    protected abstract void insertElement(Resume resume, int index);
 
     protected abstract void fillDeletedElement(int index);
 }

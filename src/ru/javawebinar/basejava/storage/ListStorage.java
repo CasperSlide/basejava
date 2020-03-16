@@ -3,10 +3,11 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class ListStorage extends AbstractStorage {
 
-    private LinkedList<Resume> list = new LinkedList<>();
+    private List<Resume> list = new LinkedList<>();
 
     @Override
     public void saveToStorage(Resume resume) {
@@ -15,12 +16,12 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public void deleteFromStorage(String uuid) {
-        list.remove(new Resume(uuid));
+        list.remove(getIndex(uuid));
     }
 
     @Override
     public void updateInStorage(Resume resume) {
-        list.set(list.indexOf(resume), resume);
+        list.set(getIndex(resume.getUuid()), resume);
     }
 
     @Override
@@ -35,7 +36,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public Resume getFromStorage(String uuid) {
-        return list.get(list.indexOf(new Resume(uuid)));
+        return list.get(getIndex(uuid));
     }
 
     @Override
@@ -44,8 +45,18 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public boolean isExists(Resume resume) {
+    public boolean isExist(Resume resume) {
         return list.contains(resume);
+    }
+
+    @Override
+    protected int getIndex(String uuid) {
+        for (int i = 0; i < list.size(); i++) {
+            if ((list.get(i).getUuid()).equals(uuid)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
 }
