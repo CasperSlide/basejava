@@ -2,60 +2,55 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ListStorage extends AbstractStorage {
+public class MapStorage extends AbstractStorage {
 
-    private List<Resume> list = new LinkedList<>();
+    private Map<String, Resume> map = new HashMap<>();
 
     @Override
     public void saveToStorage(Resume resume) {
-        list.add(resume);
+        map.put(resume.getUuid(), resume);
     }
 
     @Override
     public void deleteFromStorage(String uuid) {
-        list.remove(getIndex(uuid));
+        map.remove(uuid);
     }
 
     @Override
     public void updateInStorage(Resume resume) {
-        list.set(getIndex(resume.getUuid()), resume);
+        map.put(resume.getUuid(), resume);
     }
 
     @Override
     public void clear() {
-        list.clear();
+        map.clear();
     }
 
     @Override
     public int size() {
-        return list.size();
+        return map.size();
     }
 
     @Override
     public Resume getFromStorage(String uuid) {
-        return list.get(getIndex(uuid));
+        return map.get(uuid);
     }
 
     @Override
     public Resume[] getAll() {
-        return list.toArray(new Resume[list.size()]);
+        return map.values().toArray(new Resume[map.size()]);
     }
 
     @Override
     public boolean isExist(String uuid) {
-        return list.contains(new Resume(uuid));
+        return map.containsKey(uuid);
     }
 
     @Override
     protected int getIndex(String uuid) {
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getUuid().equals(uuid)) {
-                return i;
-            }
-        }
         return -1;
     }
 
