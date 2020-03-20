@@ -12,13 +12,13 @@ public abstract class AbstractStorageTest {
 
     private Storage storage;
 
-    private static final String UUID_1 = "A1";
+    private static final String UUID_1 = "UUID_1";
     private static final Resume RESUME_1 = new Resume(UUID_1);
 
-    private static final String UUID_2 = "A2";
+    private static final String UUID_2 = "UUID_2";
     private static final Resume RESUME_2 = new Resume(UUID_2);
 
-    private static final String UUID_3 = "A3";
+    private static final String UUID_3 = "UUID_3";
     private static final Resume RESUME_3 = new Resume(UUID_3);
 
     protected AbstractStorageTest(Storage storage) {
@@ -42,13 +42,13 @@ public abstract class AbstractStorageTest {
     @Test(expected = ExistStorageException.class)
     public void saveExist() {
         storage.save(RESUME_1);
-        storage.save(RESUME_1);
     }
+
 
     @Test(expected = StorageException.class)
     public void saveWithStorageOverflow() {
         try {
-            for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT - 2; i++) {
+            for (int i = 3; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
                 storage.save(new Resume());
             }
         } catch (StorageException e) {
@@ -93,13 +93,7 @@ public abstract class AbstractStorageTest {
     // Size
     @Test
     public void size() {
-        storage.clear();
-        storage.save(new Resume());
-        assertEquals(1, storage.size());
-        storage.save(new Resume());
         assertEquals(2, storage.size());
-        storage.save(new Resume());
-        assertEquals(3, storage.size());
     }
 
     // Get
@@ -116,14 +110,10 @@ public abstract class AbstractStorageTest {
     // getAll
     @Test
     public void getAll() {
-        String[] uuids = {UUID_1, UUID_2, UUID_3};
-        storage.save(RESUME_3);
-        assertEquals(3, storage.getAll().length);
-
-        Resume[] resumes = storage.getAll();
-        for (int i = 0; i < uuids.length; i++) {
-            assertEquals(new Resume(uuids[i]), resumes[i]);
-        }
+        Resume[] array = storage.getAll();
+        assertEquals(2, array.length);
+        assertEquals(RESUME_1, array[0]);
+        assertEquals(RESUME_2, array[1]);
     }
 
 }

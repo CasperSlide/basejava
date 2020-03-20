@@ -53,6 +53,6 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract boolean isExist(String uuid);
 
-    protected abstract int getIndex(String uuid);
+    protected abstract int getKey(String uuid);
 
 }

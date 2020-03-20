@@ -16,12 +16,12 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public void deleteFromStorage(String uuid) {
-        list.remove(getIndex(uuid));
+        list.remove(getKey(uuid));
     }
 
     @Override
     public void updateInStorage(Resume resume) {
-        list.set(getIndex(resume.getUuid()), resume);
+        list.set(getKey(resume.getUuid()), resume);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public Resume getFromStorage(String uuid) {
-        return list.get(getIndex(uuid));
+        return list.get(getKey(uuid));
     }
 
     @Override
@@ -46,11 +46,11 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public boolean isExist(String uuid) {
-        return list.contains(new Resume(uuid));
+        return getKey(uuid) != -1;
     }
 
     @Override
-    protected int getIndex(String uuid) {
+    protected int getKey(String uuid) {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getUuid().equals(uuid)) {
                 return i;

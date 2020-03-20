@@ -2,12 +2,12 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
 
-    private Map<String, Resume> map = new HashMap<>();
+    private Map<String, Resume> map = new LinkedHashMap<>();
 
     @Override
     public void saveToStorage(Resume resume) {
@@ -50,7 +50,9 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected int getIndex(String uuid) {
+    protected int getKey(String uuid) {
+        // MapStorage в getIndex возвращай uuid
+        // Как вернуть uuid, он ведь String?
         return -1;
     }
 
